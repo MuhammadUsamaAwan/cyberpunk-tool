@@ -11,7 +11,12 @@ const User = require('../../models/User');
 // @access   Private
 router.post(
   '/',
-  [auth, [check('text', 'Text is required').not().isEmpty()]],
+  [auth,
+    [
+      check('text', 'Text is required').not().isEmpty(),
+      check('title', 'Title is required').not().isEmpty()
+    ]
+  ],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -23,6 +28,7 @@ router.post(
 
       const newBuild = new Build({
         text: req.body.text,
+        title: req.body.title,
         name: user.name,
         user: req.user.id,
         private: req.body.private
@@ -40,8 +46,8 @@ router.post(
 
 // @route    GET api/builds
 // @desc     Get all builds
-// @access   Private
-router.get('/', auth, async (req, res) => {
+// @access   Public
+router.get('/', async (req, res) => {
   try {
     const builds = await Build.find().sort({ date: -1 });
     res.json(builds);

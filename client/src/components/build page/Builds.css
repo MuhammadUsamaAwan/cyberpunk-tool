@@ -1,0 +1,11 @@
+.table {
+    overflow-x: auto;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1.3rem;
+}
+
+td {
+    text-align: center;
+}
