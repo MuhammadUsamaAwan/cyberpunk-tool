@@ -8,6 +8,7 @@ import Login from './components/login page/Login';
 import Planner from './components/planner page/Planner';
 import Profile from './components/profile page/Profile';
 import Home from './components/home page/Home';
+import { BuildsProvider } from './components/build page/BuildsContext';
 
 function App() {
   return (
@@ -15,11 +16,15 @@ function App() {
       <Nav />
       <Switch>
         <Route exact path='/' component = { Home }></Route>
-        <Route exact path='/builds' component = { Builds }></Route>
         <Route path='/builds/:id' component = { BuildDetail }></Route>
         <Route path='/planner' component = { Planner }></Route>
         <Route path='/login' component = { Login }></Route>
         <Route path='/profile' component = { Profile }></Route>
+        <Route exact path='/builds'>
+          <BuildsProvider>
+            <Builds />
+          </BuildsProvider>
+        </Route>
       </Switch>
     </Router>
   );

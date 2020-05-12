@@ -1,25 +1,70 @@
 .table {
-    overflow-x: auto;
-    width: 90%;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 1.3rem;
+  overflow-x: auto;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 1.3rem;
 }
 
 td {
-    text-align: center;
+  text-align: center;
 }
 
 thead {
-    color: #E90848;
+  color: #e90848;
 }
 
 .link {
-    text-decoration: none;
-    color: #00F0FF;
+  text-decoration: none;
+  color: #00f0ff;
 }
 
 .build-body {
-    text-align: center;
-    font-size: 1rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/*for dropdown menu*/
+
+.dropbtn {
+  background-color: #1A4040;
+  color: #00F0FF;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+.dropdown {
+  float: right;
+  margin-right: 10rem;
+  margin-bottom: 1rem;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #1A4040;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.dropdown-link {
+  color: #00F0FF;
+  padding: 12px 16px;
+  display: block;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.dropdown-link:hover {
+  background-color: #3a4e93;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.dropdown:hover .dropbtn {
+  color: #e90848;
 }
