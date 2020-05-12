@@ -9,3 +9,17 @@
 td {
     text-align: center;
 }
+
+thead {
+    color: #E90848;
+}
+
+.link {
+    text-decoration: none;
+    color: #00F0FF;
+}
+
+.build-body {
+    text-align: center;
+    font-size: 1rem;
+}

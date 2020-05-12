@@ -59,8 +59,8 @@ router.get('/', async (req, res) => {
 
 // @route    GET api/builds/:id
 // @desc     Get build by ID
-// @access   Private
-router.get('/:id', auth, async (req, res) => {
+// @access   Public
+router.get('/:id', async (req, res) => {
   try {
     const build = await Build.findById(req.params.id);
 
