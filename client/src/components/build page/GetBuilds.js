@@ -39,7 +39,7 @@ const GetBuilds = ({ sort }) => {
             <tr>
                 <th>Title</th>
                 <th>Upvotes</th>
-                <th>Auther</th>
+                <th>Author</th>
                 <th>Created On</th>
             </tr>
             </thead>
