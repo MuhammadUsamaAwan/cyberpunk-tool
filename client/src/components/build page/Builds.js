@@ -4,7 +4,7 @@ import GetBuilds from './GetBuilds';
 import SearchBuilds from './SearchBuilds';
 
 const Builds = () => {
-    const [sort, setSort] = useState('dateA');
+    const [sort, setSort] = useState('dateD');
     return (
         <React.Fragment>
             <h1 className="heading">Builds</h1>

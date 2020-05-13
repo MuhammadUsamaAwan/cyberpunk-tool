@@ -73,8 +73,7 @@ thead {
   color: #00F0FF;
   border-color: #00F0FF;
   border-width: 0.1rem;
-  border-radius: 1rem;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  padding: 10px 0.5rem 10px 1rem;
   width: 20rem;
   outline: none;
   transition: all 200ms ease-in-out;
@@ -84,10 +83,31 @@ thead {
   box-shadow: 0px 0px 5px 2px rgba(0,240,255,1);
 }
 
+.search:focus {
+  box-shadow: 0px 0px 5px 2px rgba(0,240,255,1);
+}
+
+.search-form {
+  display: flex;
+}
+
+.icon {
+  padding: 10px 15px 10px 15px;
+  border: none;
+  background-color: #00f0ff;
+  cursor: pointer;
+}
+
 /* adjust dropdown and search bar */
 .adjust {
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+}
+
+@media screen and (max-width:768px) {
+  .search {
+    width: 10rem;
+  }
 }
