@@ -17,7 +17,7 @@ const SearchBuilds = () => {
     return (
         <form onSubmit={handleFilter} className="search-form">
             <input type="text" className="search" placeholder="Search Builds by Title or Author..." value={search} onChange= {handleSearch}/>
-            <button type="submit" className="icon"><i style={{color: 'black'}} className="fa fa-search"></i></button>
+            <button type="submit" className="search-icon"><i className="fa fa-search"></i></button>
         </form>
     )
 }

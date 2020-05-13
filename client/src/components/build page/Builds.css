@@ -91,11 +91,12 @@ thead {
   display: flex;
 }
 
-.icon {
+.search-icon {
   padding: 10px 15px 10px 15px;
   border: none;
   background-color: #00f0ff;
   cursor: pointer;
+  color: black;
 }
 
 /* adjust dropdown and search bar */
