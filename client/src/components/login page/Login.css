@@ -94,3 +94,12 @@
         width: 94%;
     }
 }
+
+/* for the errors */
+/* The alert message box */
+.alert {
+    color: red;
+}
+.success {
+    color: green;
+}
