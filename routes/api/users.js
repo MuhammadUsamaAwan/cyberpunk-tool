@@ -6,6 +6,7 @@ const config = require('config');
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
 const auth = require('../../middlewave/auth');
+const nodemailer = require('nodemailer');
 
 // @route    POST api/users
 // @desc     Register user
@@ -136,7 +137,7 @@ router.post(
 // @access   Public
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find().select('-password');
+    const users = await User.find().select('-password -token');
     res.json(users);
   } catch (err) {
     console.error(err.message);
@@ -149,7 +150,7 @@ router.get('/', async (req, res) => {
 // @access   Private
 router.get('/me', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select('-password -token');
     res.json(user);
   } catch (err) {
     console.error(err.message);
@@ -162,7 +163,7 @@ router.get('/me', auth, async (req, res) => {
 // @access   Public
 router.get('/user/:id', async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select('-password');
+    const user = await User.findById(req.params.id).select('-password -token');
 
     if (!user) return res.status(400).json({ msg: 'User not found' });
     res.json(user);
@@ -180,7 +181,7 @@ router.get('/user/:id', async (req, res) => {
 // @access   Private
 router.post(
   '/changename',
-  [auth, [check('name', 'Name is required').not().isEmpty()]],
+  [auth, [check('name', 'Name must be between 6 and 20 characters').isLength({ min: 6, max:20 })]],
   async (req, res) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -214,8 +215,8 @@ router.post(
       check('password', 'Old password is required').exists(),
       check(
         'newPassword',
-        'Please enter a new password with 6 or more characters'
-      ).isLength({ min: 6 }),
+        'Please enter a password between 6 and 20 characters'
+      ).isLength({ min: 6, max:20 }),
     ],
   ],
   async (req, res) => {
@@ -247,6 +248,111 @@ router.post(
     }
   }
 );
+
+// @route    POST api/users/resetpassword
+// @desc     resets user password
+// @access   Public
+router.post(
+  '/resetpassword',
+  [
+    check('password', 'Please enter a password between 6 and 20 characters'
+    ).isLength({ min: 6, max:20 }),
+    check('token','Token not valid').isLength({ min: 19, max:21 })
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    let { password, token } = req.body;
+    try {
+      const user = await User.findOne({ token });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'Token not valid' }] });
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      password = await bcrypt.hash(password, salt);
+
+      await User.findOneAndUpdate(token, {
+        password
+      });
+      res.json('Password changed');
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
+// @route    POST api/users/forgotpassword
+// @desc     Sends password through email
+// @access   Public
+router.post(
+  '/forgotpassword',
+  [
+    check('email', 'Email is required').exists(),
+  ],
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    const { email } = req.body;
+    try {
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res
+          .status(400)
+          .json({ errors: [{ msg: 'User do not exist' }] });
+      }
+      async function main() {
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+          service: "Gmail",
+          auth: {
+            user: config.get('gmailUser'), // generated ethereal user
+            pass: config.get('gmailPass') // generated ethereal password
+          }
+        });
+        function makeid(length) {
+          var result           = '';
+          var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+          var charactersLength = characters.length;
+          for ( var i = 0; i < length; i++ ) {
+             result += characters.charAt(Math.floor(Math.random() * charactersLength));
+          }
+          return result;
+       }
+       const token = makeid(20);
+       await User.findOneAndUpdate(user.email, {
+        token
+      });
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+          from: '"Cyperpunktool" <noreply@cyberpunktool.com>', // sender address
+          to: user.email, // list of receivers
+          subject: "Reset your cyberpunktool password", // Subject line
+          html: "<h3>Hello "+user.name+"</h3><p>Someone has requested a link to change your password. You can do this through the link below.</p><a href='http://localhost:3000/changepassword/"+token+"'>Change my Password</a> <p>If you didn't request this, please ignore this email. Your password won't change until you access the link above and create a new one<p>" // html body
+        });
+      
+        console.log("Message sent: %s", info.messageId);
+        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+        res.status(200).send('Email Sent');
+      }
+      
+      main().catch(console.error);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server Error');
+    }
+  }
+);
+
 
 // @route    DELETE api/users
 // @desc     Deletes the user
