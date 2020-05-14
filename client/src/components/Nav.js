@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { UserContext } from '../UserContext';
 
 const Nav = () => {
-    const [userInfo, setUserInfo] = useContext(UserContext);
+    const [userInfo] = useContext(UserContext);
     if (userInfo.isLoggedIn === false) {
         return (
             <nav className="navbar">

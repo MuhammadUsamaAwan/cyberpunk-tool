@@ -5,7 +5,7 @@ import './Login.css';
 import axios from 'axios';
 
 const ForgotPassword = () => {
-    const [userInfo, setUserInfo] = useContext(UserContext);
+    const [userInfo] = useContext(UserContext);
     const [email, setEmail] = useState({value:"", errors:[], success:""})
     const history = useHistory();
     if (userInfo.isLoggedIn) history.push('/');

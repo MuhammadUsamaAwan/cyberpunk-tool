@@ -11,50 +11,38 @@ import Home from './components/home page/Home';
 import { BuildsProvider } from './components/build page/BuildsContext';
 import { UserProvider } from './UserContext';
 import ForgotPassword from './components/login page/ForgotPassword';
+import ResetPassword from './components/login page/ResetPassword';
 
 function App() {
   return (
     <Router>
       <UserProvider>
         <Nav />
-      </UserProvider>
       <Switch>
         <Route exact path='/' component = { Home }></Route>
         
         <Route path='/builds/:id'>
-          <UserProvider>
-            <BuildDetail />
-          </UserProvider>
+          <BuildDetail />
         </Route>
         
         <Route path='/planner'>
-          <UserProvider>
-            <Planner />
-          </UserProvider>
+          <Planner />
         </Route>
         
         <Route path='/login'>
-          <UserProvider>
-            <Login />
-          </UserProvider>
+          <Login />
         </Route>
         
         <Route path='/profile'>
-        <UserProvider>
-            <Profile />
-          </UserProvider>
+          <Profile />
         </Route>
 
         <Route path='/forgotpassword'>
-        <UserProvider>
-            <ForgotPassword />
-          </UserProvider>
+          <ForgotPassword />
         </Route>
 
         <Route path='/resetpassword'>
-        <UserProvider>
-            <Profile />
-          </UserProvider>
+          <ResetPassword />
         </Route>
         
         <Route exact path='/builds'>
@@ -68,6 +56,7 @@ function App() {
         </Route>
       
       </Switch>
+      </UserProvider>
     </Router>
   );
 }
