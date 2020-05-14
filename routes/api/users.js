@@ -137,7 +137,7 @@ router.post(
 // @access   Public
 router.get('/', async (req, res) => {
   try {
-    const users = await User.find().select('-password -token');
+    const users = await User.find().select('-password');
     res.json(users);
   } catch (err) {
     console.error(err.message);
@@ -277,7 +277,7 @@ router.post(
       const salt = await bcrypt.genSalt(10);
       password = await bcrypt.hash(password, salt);
 
-      await User.findOneAndUpdate(token, {
+      await User.findOneAndUpdate({ token }, {
         password
       });
       res.json('Password changed');
@@ -329,15 +329,15 @@ router.post(
           return result;
        }
        const token = makeid(20);
-       await User.findOneAndUpdate(user.email, {
+       await User.findOneAndUpdate( { email }, {
         token
       });
         // send mail with defined transport object
         let info = await transporter.sendMail({
-          from: '"Cyperpunktool" <noreply@cyberpunktool.com>', // sender address
+          from: "<noreply@cyberpunktool.com>", // sender address
           to: user.email, // list of receivers
           subject: "Reset your cyberpunktool password", // Subject line
-          html: "<h3>Hello "+user.name+"</h3><p>Someone has requested a link to change your password. You can do this through the link below.</p><a href='http://localhost:3000/changepassword/"+token+"'>Change my Password</a> <p>If you didn't request this, please ignore this email. Your password won't change until you access the link above and create a new one<p>" // html body
+          html: "<h3>Hello "+user.name+"</h3><p>Someone has requested a link to change your password. You can do this through the link below.</p><a href='http://localhost:3000/changepassword/'>Change my Password</a> <p>Your Token is "+token+"</p> <p>If you didn't request this, please ignore this email. Your password won't change until you access the link above and create a new one<p>" // html body
         });
       
         console.log("Message sent: %s", info.messageId);
