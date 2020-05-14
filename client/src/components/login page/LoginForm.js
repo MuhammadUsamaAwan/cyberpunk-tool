@@ -23,6 +23,7 @@ const LoginForm = ({ userData, setUserData, userInfo, setUserInfo }) => {
             const res = await axios.post('/api/users/auth', body, config);
             setUserInfo ({...userInfo, isLoggedIn: true, token: res.data.token});
             setUserData({...userData, loginSuccess: "Login Successful!", errorsLogin: []});
+            window.location.replace("/");
         } catch(err) {
             setUserData({...userData, errorsLogin: err.response.data.errors})
         }

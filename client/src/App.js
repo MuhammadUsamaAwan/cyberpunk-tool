@@ -14,7 +14,9 @@ import { UserProvider } from './UserContext';
 function App() {
   return (
     <Router>
-      <Nav />
+      <UserProvider>
+        <Nav />
+      </UserProvider>
       <Switch>
         <Route exact path='/' component = { Home }></Route>
         
@@ -46,6 +48,10 @@ function App() {
           <BuildsProvider>
             <Builds />
           </BuildsProvider>
+        </Route>
+      
+        <Route>
+          Not Found
         </Route>
       
       </Switch>

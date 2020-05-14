@@ -27,13 +27,10 @@
 @media screen and (max-width:768px) {
     .navbar {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         grid-template-rows: repeat(2, 1fr);
         grid-column-gap: 0.25rem;
         grid-row-gap: 2rem;
-    }
-    .home {
-        grid-area: 1 / 1 / 2 / 3;
     }
     .bars {
         line-height: 0.7rem;

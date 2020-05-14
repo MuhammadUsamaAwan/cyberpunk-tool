@@ -28,7 +28,8 @@ const SignupForm = ({ userData, setUserData, userInfo, setUserInfo }) => {
                 const body = JSON.stringify(user);
                 const res = await axios.post('/api/users/', body, config);
                 setUserInfo ({...userInfo, isLoggedIn: true, token: res.data.token});
-                setUserData({...userData, signupSuccess: "Login Successful!", errorsSignup: []});
+                setUserData({...userData, signupSuccess: "Sigup Successful!", errorsSignup: []});
+                window.location.replace("/");
             } catch(err) {
                 setUserData({...userData, errorsSignup: err.response.data.errors})
             }
