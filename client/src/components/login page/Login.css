@@ -96,10 +96,16 @@
 }
 
 /* for the errors */
-/* The alert message box */
 .alert {
     color: red;
 }
 .success {
     color: green;
+}
+
+/* for recaptcha*/
+.recaptcha {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

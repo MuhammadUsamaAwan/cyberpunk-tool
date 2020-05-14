@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import Recaptcha from 'react-recaptcha';
 
 const SignupForm = ({ userData, setUserData, userInfo, setUserInfo }) => {
+    const [verifyHuman, setVerifyHuman] = useState(false);
     const handleChange = e => {
         if (e.target.id === 'signupemail') setUserData({...userData, email: e.target.value});
         if (e.target.id === 'signuppassword') setUserData({...userData, password: e.target.value});
@@ -13,6 +15,7 @@ const SignupForm = ({ userData, setUserData, userInfo, setUserInfo }) => {
         e.preventDefault();
         if (userInfo.isLoggedIn === false) {
         if (userData.password !== userData.password2) setUserData({...userData, errorsSignup: [{msg: 'Passwords do not match'}]})
+        else if (verifyHuman === false) setUserData({...userData, errorsSignup: [{msg: 'Please verify that you are human'}]})
         else {
             const user = {
                 email: userData.email,
@@ -40,6 +43,13 @@ const SignupForm = ({ userData, setUserData, userInfo, setUserInfo }) => {
         }
     }
 
+    const verifyCallback = () => {
+        setVerifyHuman(true);
+    }
+    const expiredCallback = () => {
+        setVerifyHuman(false);
+    }
+
     return (
         <form className="signup-form" onSubmit={handleSubmit}>
             <h1 className="form-heading">I Want to Create an Account</h1>
@@ -56,6 +66,14 @@ const SignupForm = ({ userData, setUserData, userInfo, setUserInfo }) => {
                 {userData.errorsSignup.map (error => <div key={error.msg}>{error.msg}</div>)}
             </div>
             <div className="success"> {userData.signupSuccess}</div>
+            <div className="recaptcha">
+            <Recaptcha 
+                sitekey="6LdXFfcUAAAAADxbTZEZ4-vwouOQCAHC0FX4t3Hm"
+                render="explicit"
+                verifyCallback={verifyCallback}
+                expiredCallback={expiredCallback}
+                theme="dark"
+            /></div>
             <input type="submit" value="Sign Up" className="form-submit"/>
         </form>
     )
