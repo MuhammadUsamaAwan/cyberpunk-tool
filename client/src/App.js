@@ -10,6 +10,7 @@ import Profile from './components/profile page/Profile';
 import Home from './components/home page/Home';
 import { BuildsProvider } from './components/build page/BuildsContext';
 import { UserProvider } from './UserContext';
+import ForgotPassword from './components/login page/ForgotPassword';
 
 function App() {
   return (
@@ -39,6 +40,18 @@ function App() {
         </Route>
         
         <Route path='/profile'>
+        <UserProvider>
+            <Profile />
+          </UserProvider>
+        </Route>
+
+        <Route path='/forgotpassword'>
+        <UserProvider>
+            <ForgotPassword />
+          </UserProvider>
+        </Route>
+
+        <Route path='/resetpassword'>
         <UserProvider>
             <Profile />
           </UserProvider>

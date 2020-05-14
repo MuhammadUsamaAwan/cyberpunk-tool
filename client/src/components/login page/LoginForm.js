@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const LoginForm = ({ userData, setUserData, userInfo, setUserInfo }) => {
     const handleChange = e => {
@@ -46,6 +47,7 @@ const LoginForm = ({ userData, setUserData, userInfo, setUserInfo }) => {
                 {userData.errorsLogin.map (error => <div key={error.msg}>{error.msg}</div>)}
             </div>
             <div className="success"> {userData.loginSuccess}</div>
+            <Link to='/forgotpassword' className="forgot-link">Forgot Password?</Link>
             <input type="submit" value="Login" className="form-submit"/>
         </form>
     )

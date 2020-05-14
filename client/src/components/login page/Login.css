@@ -109,3 +109,27 @@
     justify-content: center;
     align-items: center;
 }
+
+/*for forgot password*/
+.forgot-form {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    border-style: solid;
+    border-color: #00F0FF;
+    border-width: 2px;
+    margin-top: 8rem;
+    transition: all 200ms ease-in-out;
+}
+
+.forgot-form:hover {
+    color: #00F0FF;
+    box-shadow: 0px 0px 5px 2px rgba(0,240,255,1);
+}
+
+.forgot-link {
+    color: #00F0FF;
+    text-decoration: none;
+    display: block;
+}
