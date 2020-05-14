@@ -112,9 +112,8 @@
 
 /*for forgot password*/
 .forgot-form {
-    width: 50%;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 2rem;
+    margin-right: 2rem;
     text-align: center;
     border-style: solid;
     border-color: #00F0FF;
