@@ -12,6 +12,8 @@ import { BuildsProvider } from './components/build page/BuildsContext';
 import { UserProvider } from './UserContext';
 import ForgotPassword from './components/login page/ForgotPassword';
 import ResetPassword from './components/login page/ResetPassword';
+import ChangePassword from './components/profile page/ChangePassword';
+import UsersProfile from './components/profile page/UsersProfile';
 
 function App() {
   return (
@@ -29,8 +31,14 @@ function App() {
           <Login />
         </Route>
         
-        <Route path='/profile'>
+        <Route exact path='/profile'>
           <Profile />
+        </Route>
+
+        <Route path='/profile/:id' component={UsersProfile} />
+
+        <Route path='/changepassword'>
+          <ChangePassword />
         </Route>
 
         <Route path='/forgotpassword'>

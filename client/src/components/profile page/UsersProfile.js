@@ -1,16 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link} from 'react-router-dom';
 import './Profile.css';
-import { UserContext } from '../../UserContext';
-import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 
-const Profile = () => {
-    const [userInfo, setUserInfo] = useContext(UserContext);
-    const history = useHistory();
-    if (!userInfo.isLoggedIn) history.push('/');
+const UsersProfile = ({ match }) => {
     const [profile, setProfile] = useState({
         name: "",
-        email: "",
         builds: [],
         date: ""
     })
@@ -19,16 +14,10 @@ const Profile = () => {
         let mounted = true;
         const getProfile = async () => {
             try {
-            const config = {
-                headers: {
-                    'x-auth-token': userInfo.token
-                }
-            }
-            const res = await axios.get('/api/users/me', config);
+            const res = await axios.get(`/api/users/user/${match.params.id}`);
             if (mounted) {
                 setProfile({...profile,
                     name: res.data.user.name,
-                    email: res.data.user.email,
                     date: res.data.user.date.slice(0, 10),
                     builds: res.data.build
                 })
@@ -47,25 +36,17 @@ const Profile = () => {
     let length = 0;
     profile.builds.map (build => length = build.upvotes.length + length )
 
-    const logout = () => {
-        setUserInfo({isLoggedIn: false, token: ""})
-        history.push('/');
-    }
-
     return (
         <React.Fragment>
-            <h1 className="heading">My Profile</h1>
+            <h1 className="heading">User Profile</h1>
             <div className="card">
                 <h1>{profile.name}</h1>
-                <p><i className="fa fa-user-o icon"></i>{profile.email}</p>
                 <p><i className="fa fa-pencil icon"></i>{profile.builds.length} Builds</p>
                 <p><i className="fa fa-thumbs-o-up icon"></i>{length} Upvotes</p>
                 <p><i className="fa fa-calendar icon"></i>Joined On {profile.date}</p>
-                <Link to='/changepassword'><button className="btn">Change Password?</button></Link>
-                <button className="btn" onClick={logout}>Logout</button>
             </div>
 
-            <h1 className="heading">My Builds</h1>
+            <h1 className="heading">{profile.name} Builds</h1>
             <table className="table">
             <thead>
             <tr>
@@ -91,4 +72,4 @@ const Profile = () => {
     )
 }
 
-export default Profile;
+export default UsersProfile;

@@ -167,9 +167,13 @@ router.get('/me', auth, async (req, res) => {
 router.get('/user/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id).select('-password -token');
-
     if (!user) return res.status(400).json({ msg: 'User not found' });
-    res.json(user);
+
+    const {id} = user;
+    let build = await Build.find({user: id});
+    build = (build.filter (build => build.private !==true))
+
+    res.json({user, build});
   } catch (err) {
     console.error(err.message);
     if (err.kind == 'ObjectId') {
@@ -218,7 +222,7 @@ router.post(
       check('password', 'Old password is required').exists(),
       check(
         'newPassword',
-        'Please enter a password between 6 and 20 characters'
+        'Please enter a new password between 6 and 20 characters'
       ).isLength({ min: 6, max:20 }),
     ],
   ],
@@ -241,7 +245,7 @@ router.post(
       const salt = await bcrypt.genSalt(10);
       newPassword = await bcrypt.hash(newPassword, salt);
 
-      await User.findOneAndUpdate(req.user.id, {
+      await User.findByIdAndUpdate(req.user.id, {
         password: newPassword,
       });
       res.json('Password changed');

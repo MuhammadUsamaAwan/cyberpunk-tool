@@ -49,7 +49,7 @@ const GetBuilds = ({ sort }) => {
                 <tr key={build._id}>
                     <td> <Link to={`/builds/${build._id}`} className="link">{build.title}</Link> </td>
                     <td>{build.upvotes.length}</td>
-                    <td>{build.name}</td>
+                    <td><Link to={`/profile/${build.user}`} className="link">{build.name}</Link></td>
                     <td>{build.date.slice(0, 10)}</td>
                 </tr>
             )}

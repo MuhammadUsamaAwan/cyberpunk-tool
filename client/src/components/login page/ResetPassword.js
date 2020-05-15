@@ -49,11 +49,11 @@ const ResetPassword = () => {
         <form className="forgot-form" onSubmit={handleSubmit}>
             <h1 className="form-heading">Reset Your Password</h1>
             <label className="form-label"><i className="fa fa-lock icon"></i>New Password</label>
-            <input type="text" id="resetPassword" className="form-input" value={state.password} onChange={handleChange} required/><br/>
+            <input type="password" id="resetPassword" className="form-input" value={state.password} onChange={handleChange} required/><br/>
             <label className="form-label"><i className="fa fa-lock icon"></i>Confirm New Password</label>
-            <input type="text" id="resetPassword2" className="form-input" value={state.password2} onChange={handleChange} required/><br/>
+            <input type="password" id="resetPassword2" className="form-input" value={state.password2} onChange={handleChange} required/><br/>
             <label className="form-label"><i className="fa fa-lock icon"></i>Token from Email</label>
-            <input type="text" id="token" className="form-input" value={state.token} onChange={handleChange} required/><br/>
+            <input type="password" id="token" className="form-input" value={state.token} onChange={handleChange} required/><br/>
             <div className='alert'>
                 {state.errors.map (error => <div key={error.msg}>{error.msg}</div>)}
             </div>
