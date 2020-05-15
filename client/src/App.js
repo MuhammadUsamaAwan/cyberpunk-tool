@@ -21,10 +21,6 @@ function App() {
       <Switch>
         <Route exact path='/' component = { Home }></Route>
         
-        <Route path='/builds/:id'>
-          <BuildDetail />
-        </Route>
-        
         <Route path='/planner'>
           <Planner />
         </Route>
@@ -50,6 +46,8 @@ function App() {
             <Builds />
           </BuildsProvider>
         </Route>
+
+        <Route path='/builds/:id' component={BuildDetail} />
       
         <Route>
           Not Found

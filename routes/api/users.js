@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
 const User = require('../../models/User');
+const Build = require('../../models/Build');
 const auth = require('../../middlewave/auth');
 const nodemailer = require('nodemailer');
 
@@ -151,7 +152,9 @@ router.get('/', async (req, res) => {
 router.get('/me', auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password -token');
-    res.json(user);
+    const {id} = user;
+    const build = await Build.find({user: id});
+    res.json({user, build});
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server Error');
