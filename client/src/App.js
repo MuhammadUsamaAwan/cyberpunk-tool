@@ -55,7 +55,7 @@ function App() {
           </BuildsProvider>
         </Route>
 
-        <Route path='/builds/:id' component={BuildDetail} />
+        <Route path='/builds/:id' component={BuildDetail}/>
       
         <Route>
           Not Found

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../../UserContext';
 import './Builds.css';
 import './comments.css';
 import axios from 'axios';
@@ -8,7 +9,9 @@ const BuildDetail = ({ match }) => {
   const [build, setBuild] = useState ({
     "comments": [ { "replies": [{date:""}], date:"" } ]
   });
-
+  const [comment, setComment] = useState("");
+  const [userInfo] = useContext(UserContext);
+  const [updateComment, setUpdateComment] = useState(false);
   useEffect(() => {
     let mounted = true;
     const getBuild = async (id) => {
@@ -17,6 +20,7 @@ const BuildDetail = ({ match }) => {
         if (mounted) {
           setBuild(res.data);
         }
+        console.log('ok')
       } catch (err) {
         console.error(err.response.data);
       }
@@ -27,7 +31,44 @@ const BuildDetail = ({ match }) => {
     return () => {
       mounted = false;
     };
-  }, [match.params.id]);
+  }, [match.params.id, updateComment]);
+
+  const handleChange = e => setComment(e.target.value);
+  
+  const handleSubmit = async e => {
+    e.preventDefault();
+    if (userInfo.isLoggedIn === true) {
+      const body = {
+        "text": comment
+      }
+      try {
+        const config = {
+          headers: {
+            'x-auth-token': userInfo.token
+          }
+        }
+        await axios.post(`/api/builds/comment/${build._id}`, body, config);
+        setComment("");
+        setUpdateComment(!updateComment);
+      } catch(err) {
+        console.error(err.response.data);
+      }
+    }
+  }
+
+  const deleteComment = async id => {
+    try {
+      const config = {
+        headers: {
+          'x-auth-token': userInfo.token
+        }
+      }
+      await axios.delete(`/api/builds/comment/${build._id}/${id}`, config);
+      setUpdateComment(!updateComment);
+    } catch(err) {
+      console.error(err.response.data);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -51,6 +92,8 @@ const BuildDetail = ({ match }) => {
                     <div className="comment-date">
                         {comment.date.slice(0, 10)} {comment.date.slice(12, 16)}
                         <i className="fa fa-reply icon reply-icon"></i>
+                        <i className="fa fa-trash icon reply-icon"
+                        onClick={() => deleteComment(comment._id)}></i>
                     </div>
                 </div>
             </div>
@@ -74,6 +117,10 @@ const BuildDetail = ({ match }) => {
             </div>
             )}
         </div>
+          <form className="new-comment-container" onSubmit={handleSubmit}>
+            <textarea type="text" placeholder="Leave a comment..." className="new-comment" value={comment} onChange={handleChange}/>
+            <input type="submit" value="Submit Comment" className="comment-submit"/>
+          </form>
         </div>
     </React.Fragment>
   );

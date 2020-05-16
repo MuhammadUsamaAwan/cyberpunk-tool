@@ -7,7 +7,6 @@ import axios from 'axios';
 const Profile = () => {
     const [userInfo, setUserInfo] = useContext(UserContext);
     const history = useHistory();
-    if (!userInfo.isLoggedIn) history.push('/');
     const [profile, setProfile] = useState({
         name: "",
         email: "",
