@@ -48,6 +48,10 @@
     cursor: pointer;
 }
 
+.hide-reply {
+    display: none;
+}
+
 @media screen and (max-width:768px) {
     .comments-container {
         margin-left: 1rem;
